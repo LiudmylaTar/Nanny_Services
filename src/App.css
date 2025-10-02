@@ -1,0 +1,24 @@
+:root {
+  --primary: #f03f3b;
+  --secondary: rgba(240, 63, 59, 0.2);
+  --neutral: #fbfbfb;
+  --text: #11101c;
+}
+
+.theme-red {
+  --primary: #f03f3b;
+  --secondary: rgba(240, 63, 59, 0.2);
+}
+
+.theme-blue {
+  --primary: #0957c3;
+  --secondary: rgba(9, 87, 195, 0.2);
+}
+
+.theme-green {
+  --primary: #103931;
+  --secondary: rgba(16, 57, 49, 0.2);
+}
+body {
+  margin: 0 auto;
+}

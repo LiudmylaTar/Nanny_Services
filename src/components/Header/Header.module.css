@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+}
+.header {
+  width: 100%;
+  z-index: 10;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 96px;
+  max-width: 1376px;
+  margin: 0 auto;
+}
+.transparent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  width: 100%;
+  color: white;
+}
+
+.solid {
+  position: relative;
+  background: var(--primary);
+  width: 100%;
+  color: #fff;
+}
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+/* для головної */
+.transparent .menu {
+  gap: 92px;
+}
+
+/* для інших сторінок */
+.solid .menu {
+  gap: 217px;
+}
