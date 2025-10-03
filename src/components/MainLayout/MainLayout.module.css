@@ -1,0 +1,10 @@
+.conttainer {
+  padding: 64px 128px 100px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* повна ширина */
+.fullWidth {
+  padding: 0;
+}

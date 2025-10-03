@@ -1,0 +1,19 @@
+.header {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.text {
+  font-size: 14px;
+}
+.link {
+  color: var(--primary);
+  text-decoration: underline;
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+.link:hover {
+  background-color: var(--secondary);
+}
