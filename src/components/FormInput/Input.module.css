@@ -1,0 +1,47 @@
+.inputField {
+  border: 1px solid rgba(17, 16, 28, 0.1);
+  border-radius: 12px;
+  padding: 18px 16px;
+  height: 52px;
+  width: 100%;
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 125%;
+  color: #11101c;
+  outline: none;
+  transition: box-shadow 300ms ease, border 300ms ease;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 18px;
+}
+
+.inputField:focus,
+.inputField:hover {
+  box-shadow: 0 0 0 4px rgba(78, 70, 180, 0.2);
+  border: 1px solid #989b43;
+}
+
+.eyeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  /* transform: translateY(-50%); */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.eyeIcon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: #000000;
+}

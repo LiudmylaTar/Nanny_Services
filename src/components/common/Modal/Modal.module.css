@@ -1,0 +1,69 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(11, 11, 11, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.modal {
+  font-family: "Roboto";
+  text-align: left;
+  position: relative;
+  border-radius: 32px;
+  padding: 32px;
+  background-color: #fbfbfb;
+  width: 90%;
+  max-width: 556px;
+  box-sizing: border-box;
+}
+
+@media only screen and (min-width: 768px) {
+  .modal {
+    padding: 64px;
+  }
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeIcon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #000000;
+  display: block;
+}
+.title {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 120%;
+  margin-bottom: 20px;
+  color: #11101c;
+}
+.description {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 125%;
+  color: rgba(17, 16, 28, 0.5);
+  margin-bottom: 40px;
+}
