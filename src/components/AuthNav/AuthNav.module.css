@@ -4,3 +4,24 @@
   justify-content: center;
   align-items: center;
 }
+.userWrapper {
+  display: flex;
+  margin-right: 24px;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+}
+.userInfo {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: #fbfbfb;
+  border-radius: 12px;
+  justify-content: center;
+}
+.icon {
+  background-color: transparent;
+  width: 24px;
+  color: var(--primary);
+  fill: var(--primary);
+}

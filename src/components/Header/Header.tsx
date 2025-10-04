@@ -8,12 +8,19 @@ import { useState } from "react";
 import Modal from "../common/Modal/Modal";
 import LoginForm from "../LoginForm/LoginForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import useAuthMutations from "../servise/auth";
 
 export default function Header() {
   const location = useLocation();
   const isMain = location.pathname === "/";
   const [modalType, setModalType] = useState<null | "login" | "register">(null);
   const handleClose = () => setModalType(null);
+
+  const { data: user = null } = useCurrentUser();
+  const { data: profile } = useUserProfile(user?.uid);
+  const { logout } = useAuthMutations();
 
   const modalContent = {
     login: {
@@ -38,8 +45,13 @@ export default function Header() {
       <div className={css.container}>
         <Logo />
         <div className={css.menu}>
-          <NavLinks />
-          <AuthNav onOpenModal={setModalType} />
+          <NavLinks isUser={user} />
+          <AuthNav
+            onOpenModal={setModalType}
+            onLogout={() => logout.mutate()}
+            isUser={user}
+            profile={profile}
+          />
         </div>
       </div>
       {modalType && (

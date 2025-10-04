@@ -1,10 +1,13 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { FirebaseError } from "firebase/app";
 import css from "./RegisterForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import PasswordInput from "../FormInput/PasswordInput";
 import Button from "../common/Button/Button";
+import useAuthMutations from "../servise/auth";
 
 const registerSchema = yup.object({
   name: yup.string().required("Name is required"),
@@ -29,9 +32,21 @@ export default function RegisterForm({ onClose }: RegisterFormProps) {
     resolver: yupResolver(registerSchema),
     mode: "onTouched",
   });
+
+  const { register: registerMutation } = useAuthMutations();
+
   const onSubmit = (data: RegisterFormValues) => {
-    console.log(data);
-    onClose();
+    registerMutation.mutate(data, {
+      onSuccess: () => {
+        toast.success("User successfully registered!");
+        onClose();
+      },
+      onError: (error: unknown) => {
+        const firebaseError = error as FirebaseError;
+        toast.error(firebaseError.message || "Registration error");
+        console.error("Mutation error:", error);
+      },
+    });
   };
   return (
     <FormProvider {...methods}>

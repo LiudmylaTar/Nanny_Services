@@ -1,10 +1,13 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { FirebaseError } from "firebase/app";
 import css from "./LoginForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import PasswordInput from "../FormInput/PasswordInput";
 import Button from "../common/Button/Button";
+import useAuthMutations from "../servise/auth";
 
 const loginSchema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -24,9 +27,20 @@ export default function LoginForm({ onClose }: LoginFormProps) {
     resolver: yupResolver(loginSchema),
     mode: "onTouched",
   });
+
+  const { login: loginMutation } = useAuthMutations();
+
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
-    onClose();
+    loginMutation.mutate(data, {
+      onSuccess: () => {
+        toast.success("User successfully login!");
+        onClose();
+      },
+      onError: (error: unknown) => {
+        const firebaseError = error as FirebaseError;
+        toast.error(firebaseError.message || "Login error");
+      },
+    });
   };
   return (
     <FormProvider {...methods}>
