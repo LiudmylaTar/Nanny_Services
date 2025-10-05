@@ -5,7 +5,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { auth, db } from "../../api/firebase";
+import { auth, db } from "../api/firebase";
 
 export default function useAuthMutations() {
   const queryClient = useQueryClient();

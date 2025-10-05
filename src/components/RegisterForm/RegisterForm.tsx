@@ -7,7 +7,7 @@ import css from "./RegisterForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import PasswordInput from "../FormInput/PasswordInput";
 import Button from "../common/Button/Button";
-import useAuthMutations from "../servise/auth";
+import useAuthMutations from "../../servise/auth";
 
 const registerSchema = yup.object({
   name: yup.string().required("Name is required"),

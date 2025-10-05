@@ -10,7 +10,7 @@ import LoginForm from "../LoginForm/LoginForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useUserProfile } from "../../hooks/useUserProfile";
-import useAuthMutations from "../servise/auth";
+import useAuthMutations from "../../servise/auth";
 
 export default function Header() {
   const location = useLocation();

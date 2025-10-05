@@ -7,7 +7,7 @@ import css from "./LoginForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import PasswordInput from "../FormInput/PasswordInput";
 import Button from "../common/Button/Button";
-import useAuthMutations from "../servise/auth";
+import useAuthMutations from "../../servise/auth";
 
 const loginSchema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),

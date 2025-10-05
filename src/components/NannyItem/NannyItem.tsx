@@ -1,7 +1,10 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
+import css from "./NannyItem.module.css";
+import useCurrentUser from "../../hooks/useCurrentUser";
 import Icon from "../../shared/Icon";
 import type { Nanny } from "../../types/nanny";
-
-import css from "./NannyItem.module.css";
+import DetailNannyData from "../DetailNannyData/DetailNannyData";
 
 interface NannyItemProps {
   nanny: Nanny;
@@ -23,6 +26,16 @@ export default function NannyItem({ nanny }: NannyItemProps) {
     about,
   } = nanny;
 
+  const [showDetails, setShowDetails] = useState(false);
+  const { data: user } = useCurrentUser();
+
+  const handleReadMore = () => {
+    if (!user) {
+      toast.info("Please log in to see more details.");
+      return;
+    }
+    setShowDetails(true);
+  };
   const age = new Date().getFullYear() - new Date(birthday).getFullYear();
   return (
     <div className={css.container}>
@@ -85,8 +98,13 @@ export default function NannyItem({ nanny }: NannyItemProps) {
         <div>
           <p className={css.about}>{about}</p>
 
-          <button className={css.readMore}>Read more</button>
+          {!showDetails && (
+            <button onClick={handleReadMore} className={css.readMore}>
+              Read more
+            </button>
+          )}
         </div>
+        {showDetails && <DetailNannyData id={nanny.id} />}
       </div>
     </div>
   );
