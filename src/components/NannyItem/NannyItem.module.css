@@ -1,0 +1,149 @@
+.container {
+  font-family: "Roboto", "Helvetica Neue";
+  display: flex;
+  gap: 24px;
+  border-radius: 24px;
+  background: #fbfbfb;
+  padding: 24px;
+}
+.img {
+  max-width: none; /* прибирає зайві пробіли під img */
+}
+.imgWrapper {
+  position: relative;
+  display: inline-block;
+  padding: 12px;
+  border: 2px solid rgba(240, 63, 59, 0.2);
+  border-radius: 30px;
+  align-self: flex-start;
+}
+
+.imgWrapper::after {
+  content: "";
+  position: absolute;
+  right: 9px; /* половина gap */
+  top: 9px;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #38cd3e;
+  border: 2px solid #fbfbfb;
+}
+
+.mainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.firstBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.generalWrapper {
+  display: flex;
+  gap: 48px;
+}
+.generalList {
+  display: flex;
+  gap: 32px;
+}
+.generalItem {
+  position: relative;
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #11101c;
+}
+.generalItem:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -16px; /* половина gap */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 16px;
+  background-color: rgba(17, 16, 28, 0.2);
+}
+.priceAccent {
+  color: #38cd3e;
+  margin-left: 4px;
+}
+.nanny {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #8a8a89;
+  margin-bottom: 8px;
+}
+.title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 100%;
+  color: #11101c;
+}
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-color: transparent;
+  stroke: currentColor; /* підлаштовується під колір тексту */
+  fill: none;
+}
+
+.heartBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  stroke: currentColor;
+}
+
+.iconHart {
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  fill: none;
+}
+
+.detailsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.detailsItem {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #8a8a89;
+  background: #f3f3f3;
+  border-radius: 24px;
+  padding: 8px 16px;
+}
+
+.detailsItem span {
+  color: #11101c;
+}
+.ageAccent {
+  text-decoration: underline;
+}
+.about {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 125%;
+  color: rgba(17, 16, 28, 0.5);
+  margin-bottom: 14px;
+}
+
+.readMore {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #11101c;
+}
