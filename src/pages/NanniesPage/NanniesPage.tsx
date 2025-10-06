@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import css from "./NanniesPage.module.css";
 import Button from "../../components/common/Button/Button";
 import NanniesList from "../../components/NanniesList/NanniesList";
 import { useNannies } from "../../hooks/useNannies";
@@ -41,9 +42,11 @@ export default function NanniesPage() {
     <>
       <NanniesList nannies={nannies} />
       {hasMore && (
-        <Button onClick={() => setLastValue(nannies[nannies.length - 1].id)}>
-          Load more
-        </Button>
+        <div className={css.btnWrapper}>
+          <Button onClick={() => setLastValue(nannies[nannies.length - 1].id)}>
+            Load more
+          </Button>
+        </div>
       )}
     </>
   );

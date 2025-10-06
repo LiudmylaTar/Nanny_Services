@@ -9,3 +9,18 @@
   letter-spacing: -0.01em;
   color: #fbfbfb;
 }
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  right: 50%;
+  transform: translate(50%, 50%);
+  bottom: -4px;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+}
