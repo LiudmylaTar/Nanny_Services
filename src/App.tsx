@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage/MainPage";
 import MainLayout from "./components/MainLayout/MainLayout";
 import NotFoumdPage from "./pages/NotFoumdPage/NotFoumdPage";
 import NanniesPage from "./pages/NanniesPage/NanniesPage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="*" element={<NotFoumdPage />} />
         </Route>
       </Routes>
+      <ToastContainer position="top-right" autoClose={2000} />
     </>
   );
 }

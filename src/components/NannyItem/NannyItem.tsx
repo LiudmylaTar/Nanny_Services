@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import clsx from "clsx";
 import css from "./NannyItem.module.css";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import Icon from "../../shared/Icon";
 import type { Nanny } from "../../types/nanny";
 import DetailNannyData from "../DetailNannyData/DetailNannyData";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import useFavorites from "../../hooks/useFavorites";
 
 interface NannyItemProps {
   nanny: Nanny;
@@ -28,6 +31,22 @@ export default function NannyItem({ nanny }: NannyItemProps) {
 
   const [showDetails, setShowDetails] = useState(false);
   const { data: user } = useCurrentUser();
+  const { data: profile } = useUserProfile(user?.uid);
+  const { toggleFavorite } = useFavorites();
+
+  const isFavorite = profile?.favorites?.includes(nanny.id) ?? false;
+
+  const handleFavoriteClick = () => {
+    if (!user) {
+      toast.info("This feature is available only for authorized users.");
+      return;
+    }
+    toggleFavorite.mutate({
+      uid: user.uid,
+      nannyId: nanny.id,
+      isFavorite,
+    });
+  };
 
   const handleReadMore = () => {
     if (!user) {
@@ -70,7 +89,11 @@ export default function NannyItem({ nanny }: NannyItemProps) {
                 <span className={css.priceAccent}>{price_per_hour}$</span>
               </li>
             </ul>
-            <button type="button" className={css.heartBtn}>
+            <button
+              type="button"
+              onClick={handleFavoriteClick}
+              className={clsx(css.heartBtn, { [css.active]: isFavorite })}
+            >
               <Icon name="HeartNormal" className={css.iconHart} />
             </button>
           </div>

@@ -107,6 +107,10 @@
   fill: none;
 }
 
+.heartBtn.active .iconHart {
+  stroke: var(--primary);
+  fill: var(--primary);
+}
 .detailsList {
   display: flex;
   flex-wrap: wrap;
