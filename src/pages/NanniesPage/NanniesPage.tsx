@@ -4,48 +4,51 @@ import Button from "../../components/common/Button/Button";
 import NanniesList from "../../components/NanniesList/NanniesList";
 import { useNannies } from "../../hooks/useNannies";
 import type { Nanny } from "../../types/nanny";
+import FilterBar, {
+  type FilterOption,
+} from "../../components/FilterBar/FilterBar";
 
 export default function NanniesPage() {
   const [nannies, setNannies] = useState<Nanny[]>([]);
-  const [lastValue, setLastValue] = useState<string | undefined>(undefined);
-  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const [selectedFilter, setSelectedFilter] = useState<FilterOption>("all");
 
   const {
     data = [],
     isLoading,
     isError,
+    error,
   } = useNannies({
-    limit: 3,
-    startAt: lastValue,
+    limit: 1000, // завантажуємо всі елементи один раз
+    filter: selectedFilter,
   });
-
+  const PAGE_SIZE = 3;
   useEffect(() => {
     if (data && data.length > 0) {
-      setNannies((prev) => {
-        const merged = [...prev];
-        data.forEach((item) => {
-          if (!merged.some((p) => p.id === item.id)) {
-            merged.push(item);
-          }
-        });
-        return merged;
-      });
-
-      if (data.length < 3) setHasMore(false);
+      const paginated = data.slice(0, page * PAGE_SIZE);
+      setNannies(paginated);
     }
-  }, [data]);
+  }, [data, page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedFilter]);
+
+  const hasMore = data.length > nannies.length;
 
   if (isLoading && !nannies.length) return <p>Loading, please wait...</p>;
-  if (isError) return <p>Oops, something went wrong. Try again later…</p>;
+  if (isError) {
+    console.error("NanniesPage useNannies error:", error);
+    return <p>Oops, something went wrong: {String(error?.message)}</p>;
+  }
 
   return (
     <>
+      <FilterBar onChange={(f) => setSelectedFilter(f)} />
       <NanniesList nannies={nannies} />
-      {hasMore && (
+      {!isLoading && hasMore && (
         <div className={css.btnWrapper}>
-          <Button onClick={() => setLastValue(nannies[nannies.length - 1].id)}>
-            Load more
-          </Button>
+          <Button onClick={() => setPage((p) => p + 1)}>Load more</Button>
         </div>
       )}
     </>
