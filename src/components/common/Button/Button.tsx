@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import css from "./Button.module.css";
 
-type ButtonVariant = "primary" | "secondary" | "transparent";
+type ButtonVariant = "primary" | "transparent";
 type ButtonSize = "normal" | "large";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,10 +1,11 @@
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 import css from "./AppointmentForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import Button from "../common/Button/Button";
-import { toast } from "react-toastify";
+import FormTimePicker from "../FormTimePicker/FormTimePicker";
 
 const AppointmentSchema = yup.object({
   address: yup.string().required("Address is required"),
@@ -48,11 +49,11 @@ export default function AppointmentForm({
   const { handleSubmit } = methods;
   const onSubmit = async (data: AppointmentFormValues) => {
     try {
-      // тут можеш робити запит на бекенд
+      // for future possible add to back
       console.log("Form data:", data);
 
       toast.success("Your appointment request has been sent!");
-      onClose(); // закриваємо модалку після успіху
+      onClose();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -85,7 +86,9 @@ export default function AppointmentForm({
           </div>
           <div className={css.inpunWrapper}>
             <FormInput name="childAge" placeholder="Child's age" />
-            <FormInput name="meetingTime" placeholder="00:00" />
+            <div className={css.timePicker}>
+              <FormTimePicker name="time" />
+            </div>
           </div>
           <FormInput name="email" placeholder="Email" />
           <FormInput

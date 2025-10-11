@@ -17,6 +17,11 @@
   white-space: nowrap;
   margin-bottom: 18px;
 }
+@media (max-width: 500px) {
+  .inputField {
+    margin-bottom: 6px;
+  }
+}
 
 .inputField:focus,
 .inputField:hover {

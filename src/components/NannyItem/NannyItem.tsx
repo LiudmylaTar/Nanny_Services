@@ -58,46 +58,47 @@ export default function NannyItem({ nanny }: NannyItemProps) {
   const age = new Date().getFullYear() - new Date(birthday).getFullYear();
   return (
     <div className={css.container}>
-      <div className={css.imgWrapper}>
-        <img
-          className={css.img}
-          src={avatar_url}
-          alt={name}
-          height={96}
-          width={96}
-        />
-      </div>
-      <div className={css.mainInfo}>
-        <div className={css.firstBlock}>
+      <div className={css.firstRow}>
+        <div className={css.nannyAvatrName}>
+          <div className={css.imgWrapper}>
+            <img
+              className={css.img}
+              src={avatar_url}
+              alt={name}
+              height={96}
+              width={96}
+            />
+          </div>
           <div className={css.name}>
             <p className={css.nanny}>Nanny</p>
             <h3 className={css.title}>{name}</h3>
           </div>
-
-          <div className={css.generalWrapper}>
-            <ul className={css.generalList}>
-              <li className={css.generalItem}>
-                {" "}
-                <Icon name="map-pin" className={css.icon} /> {location}
-              </li>
-              <li className={css.generalItem}>
-                {" "}
-                <Icon name="star" className={css.icon} /> Rating: {rating}
-              </li>
-              <li className={css.generalItem}>
-                Price / 1 hour:{" "}
-                <span className={css.priceAccent}>{price_per_hour}$</span>
-              </li>
-            </ul>
-            <button
-              type="button"
-              onClick={handleFavoriteClick}
-              className={clsx(css.heartBtn, { [css.active]: isFavorite })}
-            >
-              <Icon name="HeartNormal" className={css.iconHart} />
-            </button>
-          </div>
         </div>
+        <div className={css.generalWrapper}>
+          <ul className={css.generalList}>
+            <li className={css.generalItem}>
+              {" "}
+              <Icon name="map-pin" className={css.icon} /> {location}
+            </li>
+            <li className={css.generalItem}>
+              {" "}
+              <Icon name="star" className={css.icon} /> Rating: {rating}
+            </li>
+            <li className={css.generalItem}>
+              Price / 1 hour:{" "}
+              <span className={css.priceAccent}>{price_per_hour}$</span>
+            </li>
+          </ul>
+          <button
+            type="button"
+            onClick={handleFavoriteClick}
+            className={clsx(css.heartBtn, { [css.active]: isFavorite })}
+          >
+            <Icon name="HeartNormal" className={css.iconHart} />
+          </button>
+        </div>
+      </div>
+      <div className={css.mainInfo}>
         <ul className={css.detailsList}>
           <li className={css.detailsItem}>
             Age: <span className={css.ageAccent}>{age}</span>
@@ -120,7 +121,6 @@ export default function NannyItem({ nanny }: NannyItemProps) {
         </ul>
         <div>
           <p className={css.about}>{about}</p>
-
           {!showDetails && (
             <button onClick={handleReadMore} className={css.readMore}>
               Read more

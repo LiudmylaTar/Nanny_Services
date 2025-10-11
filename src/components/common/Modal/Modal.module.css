@@ -9,6 +9,8 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
+  overflow-y: auto;
+  padding: 40px 16px;
 }
 .modal {
   font-family: "Roboto";
@@ -19,6 +21,15 @@
   background-color: #fbfbfb;
   width: 90%;
   max-width: 556px;
+  box-sizing: border-box;
+}
+
+.appointmentModal {
+  max-width: 600px;
+  width: 90%;
+  background-color: #fbfbfb;
+  border-radius: 32px;
+  padding: 32px;
   box-sizing: border-box;
 }
 .mobileModal {
@@ -75,10 +86,16 @@
 }
 .title {
   font-weight: 500;
-  font-size: 40px;
+  font-size: clamp(24px, calc(2vw + 5px), 40px);
   line-height: 120%;
   margin-bottom: 20px;
   color: #11101c;
+}
+
+@media only screen and (max-width: 480px) {
+  .title {
+    max-width: 240px;
+  }
 }
 .description {
   font-weight: 400;

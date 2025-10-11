@@ -1,6 +1,10 @@
 .linkWrapper {
   display: flex;
-  gap: 40px;
+  gap: clamp(
+    16px,
+    calc(24px + (40 - 16) * ((100vw - 760px) / (1440 - 760))),
+    40px
+  );
 }
 .linkWrapper.vertical {
   flex-direction: column;

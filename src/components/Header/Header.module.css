@@ -50,7 +50,7 @@
   align-items: center;
 }
 
-@media (max-width: 719px) {
+@media (max-width: 767px) {
   .burgerBtn {
     display: flex;
   }
@@ -64,7 +64,7 @@
 .transparent .menu {
   gap: clamp(
     24px,
-    calc(24px + (92 - 24) * ((100vw - 320px) / (768 - 320))),
+    calc(24px + (92 - 24) * ((100vw - 760px) / (1440 - 760))),
     92px
   );
 }
@@ -72,8 +72,8 @@
 /* для інших сторінок */
 .solid .menu {
   gap: clamp(
-    60px,
-    calc(60px + (217 - 60) * ((100vw - 720px) / (768 - 320))),
+    30px,
+    calc(30px + (217 - 60) * ((100vw - 760px) / (1440 - 760))),
     217px
   );
 }

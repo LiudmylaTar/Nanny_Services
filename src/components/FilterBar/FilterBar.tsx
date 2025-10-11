@@ -5,8 +5,8 @@ import Icon from "../../shared/Icon";
 export type FilterOption =
   | "name-asc"
   | "name-desc"
-  | "price-low"
-  | "price-high"
+  | "less-than-10"
+  | "greater-than-10"
   | "popular"
   | "not-popular"
   | "all";
@@ -18,8 +18,8 @@ interface FilterBarProps {
 const options: { value: FilterOption; label: string }[] = [
   { value: "name-asc", label: "A to Z" },
   { value: "name-desc", label: "Z to A" },
-  { value: "price-low", label: "Less than 10$" },
-  { value: "price-high", label: "Greater than 10$" },
+  { value: "less-than-10", label: "Less than 10$" },
+  { value: "greater-than-10", label: "Greater than 10$" },
   { value: "popular", label: "Popular" },
   { value: "not-popular", label: "Not popular" },
   { value: "all", label: "Show all" },

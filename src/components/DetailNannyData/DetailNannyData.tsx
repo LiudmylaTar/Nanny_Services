@@ -48,6 +48,7 @@ export default function DetailNannyData({ id }: { id: string }) {
           onClose={handleClose}
           title={appoimentContent.title}
           description={appoimentContent.description}
+          variant="appointment"
         >
           <AppointmentForm
             onClose={handleClose}

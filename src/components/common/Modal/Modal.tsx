@@ -8,7 +8,7 @@ interface ModalProps {
   description?: string;
   hideHeader?: boolean;
   onClose: () => void;
-  variant?: "default" | "mobileMenu";
+  variant?: "default" | "mobileMenu" | "appointment";
   children: ReactNode;
 }
 
@@ -51,6 +51,7 @@ export default function Modal({
       <div
         className={clsx(css.modal, {
           [css.mobileModal]: variant === "mobileMenu",
+          [css.appointmentModal]: variant === "appointment",
         })}
       >
         <button

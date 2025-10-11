@@ -12,7 +12,7 @@ const FormInput = ({ name, placeholder, type = "text" }: FormInputProps) => {
     formState: { errors },
   } = useFormContext();
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <input
         {...register(name)}
         type={type}

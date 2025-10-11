@@ -45,11 +45,16 @@ export default function NanniesPage() {
   return (
     <>
       <FilterBar onChange={(f) => setSelectedFilter(f)} />
-      <NanniesList nannies={nannies} />
-      {!isLoading && hasMore && (
-        <div className={css.btnWrapper}>
-          <Button onClick={() => setPage((p) => p + 1)}>Load more</Button>
-        </div>
+      {!isLoading && data.length === 0 && <p>No nannies match this filter.</p>}
+      {!isLoading && data.length > 0 && (
+        <>
+          <NanniesList nannies={nannies} />
+          {hasMore && (
+            <div className={css.btnWrapper}>
+              <Button onClick={() => setPage((p) => p + 1)}>Load more</Button>
+            </div>
+          )}
+        </>
       )}
     </>
   );

@@ -1,6 +1,8 @@
 .hero {
   display: flex;
   font-family: "Roboto";
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .leftSide {

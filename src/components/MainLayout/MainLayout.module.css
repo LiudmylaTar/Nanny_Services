@@ -1,5 +1,6 @@
 .conttainer {
-  padding: 64px 128px 100px;
+  padding: clamp(32px, 5vw, 64px) clamp(16px, 8vw, 128px)
+    clamp(32px, 7vw, 100px);
   max-width: 1440px;
   margin: 0 auto;
 }

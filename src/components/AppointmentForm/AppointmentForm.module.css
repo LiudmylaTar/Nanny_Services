@@ -5,9 +5,29 @@
 }
 .inpunWrapper {
   display: flex;
+  flex-direction: row;
   gap: 8px;
 }
 
+.timePicker {
+  max-width: 232px;
+  width: 100%;
+}
+@media (max-width: 767px) {
+  .timePicker {
+    max-width: 264px;
+  }
+}
+@media (max-width: 500px) {
+  .inpunWrapper {
+    flex-direction: column;
+    gap: 1px;
+  }
+  .timePicker {
+    max-width: 368px;
+    margin-bottom: 6px;
+  }
+}
 .nannyInfo {
   display: flex;
   gap: 14px;
@@ -27,6 +47,7 @@
   line-height: 150%;
   color: #11101c;
 }
+
 .textareaField {
   border: 1px solid rgba(17, 16, 28, 0.1);
   border-radius: 12px;

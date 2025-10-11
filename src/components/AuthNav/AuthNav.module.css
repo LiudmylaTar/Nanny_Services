@@ -12,6 +12,7 @@
 }
 
 .userWrapper {
+  position: relative;
   display: flex;
   margin-right: 24px;
   gap: 14px;
@@ -55,6 +56,7 @@
   text-align: left;
   cursor: pointer;
   color: var(--text);
+  font-weight: 500;
 }
 
 .dropdown button:hover {

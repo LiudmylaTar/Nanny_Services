@@ -8,8 +8,8 @@ export type FilterOption =
   | "all"
   | "name-asc"
   | "name-desc"
-  | "price-low"
-  | "price-high"
+  | "less-than-10"
+  | "greater-than-10"
   | "popular"
   | "not-popular";
 
@@ -31,7 +31,7 @@ export function useNannies({ filter }: UseNanniesProps) {
       > | null;
       if (!data) return [];
 
-      const items = Object.entries(data)
+      let items = Object.entries(data)
         .filter(([, value]) => value !== null)
         .map(([id, value]) => ({ id, ...(value as Omit<Nanny, "id">) }));
 
@@ -43,11 +43,15 @@ export function useNannies({ filter }: UseNanniesProps) {
         case "name-desc":
           items.sort((a, b) => b.name.localeCompare(a.name));
           break;
-        case "price-low":
-          items.sort((a, b) => a.price_per_hour - b.price_per_hour);
+        case "less-than-10":
+          items = items
+            .filter((n) => n.price_per_hour < 10)
+            .sort((a, b) => a.price_per_hour - b.price_per_hour);
           break;
-        case "price-high":
-          items.sort((a, b) => b.price_per_hour - a.price_per_hour);
+        case "greater-than-10":
+          items = items
+            .filter((n) => n.price_per_hour >= 10)
+            .sort((a, b) => b.price_per_hour - a.price_per_hour);
           break;
         case "popular":
           items.sort((a, b) => b.rating - a.rating);
