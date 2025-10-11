@@ -1,8 +1,24 @@
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "../../components/common/Button/Button";
+import useCurrentUser from "../../hooks/useCurrentUser";
 import Icon from "../../shared/Icon";
 import css from "./MainPage.module.css";
 
+type OutletContextType = {
+  onOpenModal: (type: "login" | "register") => void;
+};
+
 export default function MainPage() {
+  const { data: user } = useCurrentUser();
+  const { onOpenModal } = useOutletContext<OutletContextType>();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (!user) {
+      onOpenModal("register");
+    } else {
+      navigate("/nannies"); // переходимо на список нянь
+    }
+  };
   return (
     <section className={css.hero}>
       <div className={css.leftSide}>
@@ -12,7 +28,12 @@ export default function MainPage() {
             Find Babysitters Online for All Occasions
           </p>
         </div>
-        <Button variant="transparent" size="large" className={css.startBtn}>
+        <Button
+          variant="transparent"
+          size="large"
+          className={css.startBtn}
+          onClick={handleClick}
+        >
           Get started{" "}
           <span>
             <Icon name="Arrow-up" className={css.arrowUpIcon} />

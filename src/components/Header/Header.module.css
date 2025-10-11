@@ -9,7 +9,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 96px;
+  padding: 20px
+    clamp(16px, calc(16px + (96 - 16) * ((100vw - 320px) / (1440 - 320))), 96px);
   max-width: 1376px;
   margin: 0 auto;
 }
@@ -28,17 +29,51 @@
   width: 100%;
   color: #fff;
 }
+.burgerBtn {
+  display: none;
+  background: transparent;
+  align-items: center;
+  padding: 9.5px 7.5px;
+  border: none;
+  cursor: pointer;
+}
+.iconBurger {
+  border: none;
+  background-color: transparent;
+  width: 20px;
+  height: 14px;
+  stroke: white;
+}
+
 .menu {
   display: flex;
   align-items: center;
 }
 
+@media (max-width: 719px) {
+  .burgerBtn {
+    display: flex;
+  }
+
+  .menu {
+    display: none;
+  }
+}
+
 /* для головної */
 .transparent .menu {
-  gap: 92px;
+  gap: clamp(
+    24px,
+    calc(24px + (92 - 24) * ((100vw - 320px) / (768 - 320))),
+    92px
+  );
 }
 
 /* для інших сторінок */
 .solid .menu {
-  gap: 217px;
+  gap: clamp(
+    60px,
+    calc(60px + (217 - 60) * ((100vw - 720px) / (768 - 320))),
+    217px
+  );
 }

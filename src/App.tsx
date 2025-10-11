@@ -7,8 +7,11 @@ import NotFoumdPage from "./pages/NotFoumdPage/NotFoumdPage";
 import NanniesPage from "./pages/NanniesPage/NanniesPage";
 import { ToastContainer } from "react-toastify";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
+import useCurrentUser from "./hooks/useCurrentUser";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
+  const { data: user } = useCurrentUser();
   return (
     <>
       <Routes>
@@ -17,7 +20,14 @@ function App() {
         </Route>
         <Route element={<MainLayout />}>
           <Route path="/nannies" element={<NanniesPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route
+            path="/favorites"
+            element={
+              <PrivateRoute isAuth={!!user}>
+                <FavoritesPage />
+              </PrivateRoute>
+            }
+          />
           <Route path="*" element={<NotFoumdPage />} />
         </Route>
       </Routes>

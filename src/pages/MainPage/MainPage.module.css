@@ -8,13 +8,41 @@
   flex-direction: column;
   gap: 64px;
   justify-content: flex-start;
-  padding: 251px 64px 163px 96px;
+  padding: clamp(
+      100px,
+      calc(100px + (251 - 100) * ((100vw - 320px) / (1440 - 320))),
+      251px
+    )
+    /* top */
+    clamp(32px, calc(32px + (64 - 32) * ((100vw - 320px) / (1440 - 320))), 64px)
+    /* right */
+    clamp(
+      48px,
+      calc(48px + (163 - 48) * ((100vw - 320px) / (1440 - 320))),
+      163px
+    )
+    /* bottom */
+    clamp(32px, calc(32px + (96 - 32) * ((100vw - 400px) / (1440 - 400))), 96px);
   background-color: var(--primary);
   border-radius: 30px 0 0 30px;
 }
 
 .rightSide {
-  padding: 568px 50px 50px 365px;
+  padding: clamp(
+      100px,
+      calc(100px + (568 - 100) * ((100vw - 320px) / (1440 - 320))),
+      568px
+    )
+    /* top */
+    clamp(32px, calc(32px + (50 - 32) * ((100vw - 320px) / (1440 - 320))), 50px)
+    /* right */
+    clamp(32px, calc(32px + (50 - 32) * ((100vw - 320px) / (1440 - 320))), 50px)
+    /* bottom */
+    clamp(
+      92px,
+      calc(92px + (365 - 92) * ((100vw - 320px) / (1440 - 320))),
+      365px
+    ); /* left */
   background-size: 100%;
   border-radius: 0 30px 30px 0;
   background-position: center 25%;
@@ -39,14 +67,22 @@
 }
 .titel {
   font-weight: 500;
-  font-size: 70px;
+  font-size: clamp(
+    32px,
+    calc(24px + (70 - 24) * ((100vw - 320px) / (1440 - 320))),
+    70px
+  );
   line-height: 100%;
   letter-spacing: -0.03em;
   color: #fbfbfb;
 }
 .slogan {
   font-weight: 400;
-  font-size: 28px;
+  font-size: clamp(
+    16px,
+    calc(24px + (28 - 16) * ((100vw - 400px) / (1440 - 400))),
+    28px
+  );
   line-height: 107%;
   letter-spacing: -0.02em;
   color: #fbfbfb;
@@ -55,11 +91,19 @@
   display: inline-flex;
   gap: 12px;
   width: fit-content;
+  align-items: center;
 }
 .arrowUpIcon {
   background: none;
   width: 15px;
   height: 17px;
+  transition: transform 0.2s ease; /* плавний поворот */
+  transform: rotate(0deg);
+}
+.startBtn:hover .arrowUpIcon,
+.startBtn:focus .arrowUpIcon,
+.startBtn:active .arrowUpIcon {
+  transform: rotate(50deg);
 }
 
 .wrapper {
@@ -71,6 +115,21 @@
   background-color: #fbfbfb;
   border-radius: 20px;
 }
+@media (max-width: 1000px) {
+  .hero {
+    flex-direction: column;
+  }
+  .leftSide {
+    border-radius: 30px 30px 0px 0px;
+  }
+  .rightSide {
+    border-radius: 0px 0px 30px 30px;
+  }
+  .wrapper {
+    margin-left: 100px;
+  }
+}
+
 .text {
   font-weight: 400;
   font-size: 16px;
@@ -94,4 +153,25 @@
   background: transparent;
   width: 30px;
   height: 30px;
+}
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 18px;
+    margin-left: 0px;
+  }
+  .iconWrapper {
+    background: var(--primary);
+    border-radius: 13px;
+    padding: 8px;
+    max-height: 38px;
+    max-width: 38px;
+  }
+  .checkIcon {
+    width: 20px;
+    height: 20px;
+  }
+  .number {
+    font-weight: 600;
+    font-size: 18px;
+  }
 }

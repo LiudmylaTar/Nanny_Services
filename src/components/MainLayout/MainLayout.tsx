@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Header from "../Header/Header";
+import { useState } from "react";
 import clsx from "clsx";
+import Header from "../Header/Header";
 import css from "./MainLayout.module.css";
 
 interface MainLayoutProps {
@@ -8,11 +9,12 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ fullWidth }: MainLayoutProps) {
+  const [modalType, setModalType] = useState<null | "login" | "register">(null);
   return (
-    <div className="theme-green">
-      <Header />
+    <div>
+      <Header modalType={modalType} setModalType={setModalType} />
       <main className={clsx(css.conttainer, { [css.fullWidth]: fullWidth })}>
-        <Outlet />
+        <Outlet context={{ onOpenModal: setModalType }} />
       </main>
     </div>
   );

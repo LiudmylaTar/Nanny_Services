@@ -2,6 +2,11 @@
   display: flex;
   gap: 40px;
 }
+.linkWrapper.vertical {
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
 .link {
   font-weight: 400;
   font-size: 16px;

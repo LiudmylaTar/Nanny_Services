@@ -1,17 +1,22 @@
 import { useEffect, type ReactNode, type MouseEvent } from "react";
+import clsx from "clsx";
 import Icon from "../../../shared/Icon";
 import css from "./Modal.module.css";
 
 interface ModalProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  hideHeader?: boolean;
   onClose: () => void;
+  variant?: "default" | "mobileMenu";
   children: ReactNode;
 }
 
 export default function Modal({
   title,
   description,
+  variant = "default",
+  hideHeader = false,
   children,
   onClose,
 }: ModalProps) {
@@ -43,16 +48,27 @@ export default function Modal({
 
   return (
     <div className={css.backdrop} onClick={handleBackdropClick}>
-      <div className={css.modal}>
+      <div
+        className={clsx(css.modal, {
+          [css.mobileModal]: variant === "mobileMenu",
+        })}
+      >
         <button
           className={css.closeBtn}
           onClick={onClose}
           aria-label="Close modal"
         >
-          <Icon name="close" className={css.closeIcon} />{" "}
+          <Icon
+            name="close"
+            className={clsx(css.closeIcon, {
+              [css.mobileCloseIcon]: variant === "mobileMenu",
+            })}
+          />{" "}
         </button>
-        <h2 className={css.title}>{title}</h2>
-        <p className={css.description}>{description}</p>
+        {!hideHeader && title && <h2 className={css.title}>{title}</h2>}
+        {!hideHeader && description && (
+          <p className={css.description}>{description}</p>
+        )}
         <div className={css.actions}>{children}</div>
       </div>
     </div>

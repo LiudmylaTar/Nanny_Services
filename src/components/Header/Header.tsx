@@ -11,11 +11,19 @@ import RegisterForm from "../RegisterForm/RegisterForm";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useUserProfile } from "../../hooks/useUserProfile";
 import useAuthMutations from "../../servise/auth";
+import Icon from "../../shared/Icon";
+import MobileMenu from "../MobileMenu/MobileMenu";
 
-export default function Header() {
+interface HeaderProps {
+  modalType: null | "login" | "register";
+  setModalType: (type: "login" | "register" | null) => void;
+}
+
+export default function Header({ modalType, setModalType }: HeaderProps) {
   const location = useLocation();
   const isMain = location.pathname === "/";
-  const [modalType, setModalType] = useState<null | "login" | "register">(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const handleClose = () => setModalType(null);
 
   const { data: user = null } = useCurrentUser();
@@ -44,6 +52,12 @@ export default function Header() {
     >
       <div className={css.container}>
         <Logo />
+        <button
+          className={css.burgerBtn}
+          onClick={() => setMobileOpen((prev) => !prev)}
+        >
+          <Icon name="burger" className={css.iconBurger} />
+        </button>
         <div className={css.menu}>
           <NavLinks isUser={user} />
           <AuthNav
@@ -54,6 +68,17 @@ export default function Header() {
           />
         </div>
       </div>
+      {/* Мобільне меню */}
+      {mobileOpen && (
+        <Modal onClose={() => setMobileOpen(false)} variant="mobileMenu">
+          <MobileMenu
+            isUser={user}
+            onOpenModal={setModalType}
+            onLogout={() => logout.mutate()}
+            profile={profile}
+          />
+        </Modal>
+      )}
       {modalType && (
         <Modal
           onClose={handleClose}
