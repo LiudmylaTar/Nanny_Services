@@ -4,6 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import dayjs from "dayjs";
+import { useState } from "react";
 
 type Props = {
   name: string;
@@ -11,6 +12,7 @@ type Props = {
 
 export default function FormTimePicker({ name }: Props) {
   const { control } = useFormContext();
+  const [open, setOpen] = useState(false);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -19,22 +21,30 @@ export default function FormTimePicker({ name }: Props) {
         name={name}
         render={({ field }) => (
           <TimePicker
-            format="00:00"
+            format="HH:mm"
+            open={open}
+            onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}
             value={field.value ? dayjs(field.value, "HH:mm") : null}
             onChange={(newValue) => {
               field.onChange(newValue ? newValue.format("HH:mm") : "");
             }}
             slotProps={{
               textField: {
+                placeholder: "00:00",
                 fullWidth: true,
                 size: "small",
-
+                onFocus: () => setOpen(true),
+                inputProps: {
+                  // дає цифрову клавіатуру на мобільних
+                  inputMode: "numeric",
+                },
                 InputProps: {
                   sx: {
                     "& fieldset": {
                       display: "none",
                     },
-                    placeholder: "00:00",
+
                     borderRadius: "12px",
                     backgroundColor: "#fff",
                     padding: "18px 16px",

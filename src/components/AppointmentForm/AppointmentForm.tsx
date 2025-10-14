@@ -6,6 +6,8 @@ import css from "./AppointmentForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import Button from "../common/Button/Button";
 import FormTimePicker from "../FormTimePicker/FormTimePicker";
+import useAppointment from "../../hooks/useAppointment";
+import { auth } from "../../api/firebase";
 
 const AppointmentSchema = yup.object({
   address: yup.string().required("Address is required"),
@@ -47,20 +49,26 @@ export default function AppointmentForm({
     mode: "onTouched",
   });
   const { handleSubmit } = methods;
-  const onSubmit = async (data: AppointmentFormValues) => {
-    try {
-      // for future possible add to back
-      console.log("Form data:", data);
+  const { createAppointment } = useAppointment();
 
-      toast.success("Your appointment request has been sent!");
-      onClose();
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
+  const onSubmit = (data: AppointmentFormValues) => {
+    const user = auth.currentUser;
+
+    if (!user) {
+      toast.error("You must be logged in to make an appointment.");
+      return;
     }
+    console.log(data);
+    createAppointment.mutate({
+      uid: user.uid,
+      data: {
+        ...data,
+        nannyName: nanny.name,
+        nannyAvatar: nanny.avatar,
+      },
+    });
+
+    onClose();
   };
 
   return (
@@ -87,7 +95,7 @@ export default function AppointmentForm({
           <div className={css.inpunWrapper}>
             <FormInput name="childAge" placeholder="Child's age" />
             <div className={css.timePicker}>
-              <FormTimePicker name="time" />
+              <FormTimePicker name="meetingTime" />
             </div>
           </div>
           <FormInput name="email" placeholder="Email" />
