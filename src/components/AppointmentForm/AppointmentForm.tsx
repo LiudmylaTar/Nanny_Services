@@ -17,7 +17,7 @@ const AppointmentSchema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
   parentsName: yup
     .string()
-    .min(6)
+    .min(3)
     .required("Father's or mother's name is required"),
   comment: yup.string().required("Сomment is required"),
 });
