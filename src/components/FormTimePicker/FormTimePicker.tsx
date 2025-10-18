@@ -15,7 +15,7 @@ export default function FormTimePicker({ name }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="uk">
       <Controller
         control={control}
         name={name}
@@ -23,6 +23,7 @@ export default function FormTimePicker({ name }: Props) {
           <TimePicker
             format="HH:mm"
             open={open}
+            ampm={false}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
             value={field.value ? dayjs(field.value, "HH:mm") : null}
