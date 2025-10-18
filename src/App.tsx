@@ -14,7 +14,8 @@ const FavoritesPage = lazy(() => import("./pages/FavoritesPage/FavoritesPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoumdPage/NotFoumdPage"));
 
 function App() {
-  const { data: user } = useCurrentUser();
+  const { data: user, isLoading } = useCurrentUser();
+  if (isLoading) return <p>Loading user...</p>;
   return (
     <>
       <Suspense fallback={<p>Loading...</p>}>
