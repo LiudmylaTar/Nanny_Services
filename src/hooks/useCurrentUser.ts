@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiFetch, refreshAccessToken } from "../api/client";
+import { apiFetch, hasAuthSession, refreshAccessToken } from "../api/client";
 import type { User } from "../types/user";
 
 export default function useCurrentUser() {
   return useQuery<User | null>({
     queryKey: ["currentUser"],
+    enabled: hasAuthSession(),
     queryFn: async () => {
       if (!localStorage.getItem("accessToken")) {
         const token = await refreshAccessToken();

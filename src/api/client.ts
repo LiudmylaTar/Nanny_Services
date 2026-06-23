@@ -24,6 +24,7 @@ interface AuthTokensResponse {
 let refreshPromise: Promise<string | null> | null = null;
 
 const NO_REFRESH_PATHS = ["/auth/login", "/auth/register", "/auth/refresh"];
+const AUTH_SESSION_KEY = "authSession";
 
 export function setAccessToken(token: string) {
   localStorage.setItem("accessToken", token);
@@ -31,6 +32,21 @@ export function setAccessToken(token: string) {
 
 export function clearAccessToken() {
   localStorage.removeItem("accessToken");
+}
+
+export function markAuthSession() {
+  localStorage.setItem(AUTH_SESSION_KEY, "1");
+}
+
+export function clearAuthSession() {
+  localStorage.removeItem(AUTH_SESSION_KEY);
+}
+
+export function hasAuthSession() {
+  return (
+    Boolean(localStorage.getItem("accessToken")) ||
+    localStorage.getItem(AUTH_SESSION_KEY) === "1"
+  );
 }
 
 export async function refreshAccessToken(): Promise<string | null> {
@@ -47,6 +63,7 @@ export async function refreshAccessToken(): Promise<string | null> {
       const text = await readResponseBody(res);
       if (!res.ok) {
         clearAccessToken();
+        clearAuthSession();
         return null;
       }
 
@@ -55,6 +72,7 @@ export async function refreshAccessToken(): Promise<string | null> {
       return data.accessToken;
     } catch {
       clearAccessToken();
+      clearAuthSession();
       return null;
     } finally {
       refreshPromise = null;
@@ -93,6 +111,7 @@ export async function apiFetch<T>(
       return apiFetch<T>(path, options, true);
     }
     clearAccessToken();
+    clearAuthSession();
     const err = parseJson<{ message?: string }>(text);
     throw new Error(err.message || "Unauthorized");
   }

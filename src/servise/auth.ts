@@ -1,5 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiFetch, clearAccessToken, setAccessToken } from "../api/client";
+import {
+  apiFetch,
+  clearAccessToken,
+  clearAuthSession,
+  markAuthSession,
+  setAccessToken,
+} from "../api/client";
 import type { User } from "../types/user";
 
 export default function useAuthMutations() {
@@ -20,6 +26,7 @@ export default function useAuthMutations() {
         { method: "POST", body: JSON.stringify({ name, email, password }) },
       );
       setAccessToken(data.accessToken);
+      markAuthSession();
       return data.user;
     },
     onSuccess: () => {
@@ -33,6 +40,7 @@ export default function useAuthMutations() {
         { method: "POST", body: JSON.stringify({ email, password }) },
       );
       setAccessToken(data.accessToken);
+      markAuthSession();
       return data.user;
     },
     onSuccess: () => {
@@ -44,9 +52,10 @@ export default function useAuthMutations() {
     mutationFn: async () => {
       await apiFetch("/auth/logout", { method: "POST" });
       clearAccessToken();
+      clearAuthSession();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      queryClient.setQueryData(["currentUser"], null);
     },
   });
 
