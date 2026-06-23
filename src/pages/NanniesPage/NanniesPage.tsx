@@ -1,40 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import css from "./NanniesPage.module.css";
 import Button from "../../components/common/Button/Button";
 import NanniesList from "../../components/NanniesList/NanniesList";
 import { useNannies } from "../../hooks/useNannies";
-import type { Nanny } from "../../types/nanny";
 import FilterBar, {
   type FilterOption,
 } from "../../components/FilterBar/FilterBar";
 
 export default function NanniesPage() {
-  const [nannies, setNannies] = useState<Nanny[]>([]);
-  const [page, setPage] = useState(1);
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>("all");
 
   const {
-    data = [],
+    data,
     isLoading,
     isError,
     error,
-  } = useNannies({
-    limit: 1000, // завантажуємо всі елементи один раз
-    filter: selectedFilter,
-  });
-  const PAGE_SIZE = 3;
-  useEffect(() => {
-    if (data && data.length > 0) {
-      const paginated = data.slice(0, page * PAGE_SIZE);
-      setNannies(paginated);
-    }
-  }, [data, page]);
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useNannies({ filter: selectedFilter });
 
-  useEffect(() => {
-    setPage(1);
-  }, [selectedFilter]);
-
-  const hasMore = data.length > nannies.length;
+  const nannies = data?.pages.flatMap((page) => page.data) ?? [];
+  const total = data?.pages[0]?.total ?? 0;
 
   if (isLoading && !nannies.length) return <p>Loading, please wait...</p>;
   if (isError) {
@@ -45,13 +32,18 @@ export default function NanniesPage() {
   return (
     <>
       <FilterBar onChange={(f) => setSelectedFilter(f)} />
-      {!isLoading && data.length === 0 && <p>No nannies match this filter.</p>}
-      {!isLoading && data.length > 0 && (
+      {!isLoading && total === 0 && <p>No nannies match this filter.</p>}
+      {!isLoading && nannies.length > 0 && (
         <>
           <NanniesList nannies={nannies} />
-          {hasMore && (
+          {hasNextPage && (
             <div className={css.btnWrapper}>
-              <Button onClick={() => setPage((p) => p + 1)}>Load more</Button>
+              <Button
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+              >
+                {isFetchingNextPage ? "Loading..." : "Load more"}
+              </Button>
             </div>
           )}
         </>

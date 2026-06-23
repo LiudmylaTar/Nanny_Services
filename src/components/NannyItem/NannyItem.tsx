@@ -31,7 +31,7 @@ export default function NannyItem({ nanny }: NannyItemProps) {
 
   const [showDetails, setShowDetails] = useState(false);
   const { data: user } = useCurrentUser();
-  const { data: profile } = useUserProfile(user?.uid);
+  const { data: profile } = useUserProfile(user?.id);
   const { toggleFavorite } = useFavorites();
 
   const isFavorite = profile?.favorites?.includes(nanny.id) ?? false;
@@ -42,9 +42,9 @@ export default function NannyItem({ nanny }: NannyItemProps) {
       return;
     }
     toggleFavorite.mutate({
-      uid: user.uid,
       nannyId: nanny.id,
-      isFavorite,
+      userId: user.id,
+      nanny,
     });
   };
 

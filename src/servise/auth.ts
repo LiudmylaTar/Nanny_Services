@@ -1,11 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { ref, set } from "firebase/database";
-import { auth, db } from "../api/firebase";
+import { apiFetch, clearAccessToken, setAccessToken } from "../api/client";
+import type { User } from "../types/user";
 
 export default function useAuthMutations() {
   const queryClient = useQueryClient();
@@ -20,28 +15,36 @@ export default function useAuthMutations() {
       password: string;
       name: string;
     }) => {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await set(ref(db, `users/${cred.user.uid}`), {
-        email,
-        name,
-        favorites: [],
-      });
-      return cred.user;
+      const data = await apiFetch<{ accessToken: string; user: User }>(
+        "/auth/register",
+        { method: "POST", body: JSON.stringify({ name, email, password }) },
+      );
+      setAccessToken(data.accessToken);
+      return data.user;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
   });
   const login = useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) =>
-      signInWithEmailAndPassword(auth, email, password),
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
+      const data = await apiFetch<{ accessToken: string; user: User }>(
+        "/auth/login",
+        { method: "POST", body: JSON.stringify({ email, password }) },
+      );
+      setAccessToken(data.accessToken);
+      return data.user;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
   });
 
   const logout = useMutation({
-    mutationFn: () => signOut(auth),
+    mutationFn: async () => {
+      await apiFetch("/auth/logout", { method: "POST" });
+      clearAccessToken();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },

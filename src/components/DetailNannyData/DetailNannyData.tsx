@@ -20,10 +20,10 @@ export default function DetailNannyData({ id }: { id: string }) {
   if (isError || !nanny) return <p>Something went wrong</p>;
   return (
     <>
-      {nanny.reviews ? (
+      {nanny.reviews?.length ? (
         <ul className={css.reviewList}>
-          {Object.entries(nanny.reviews).map(([key, review]) => (
-            <li key={key}>
+          {nanny.reviews.map((review) => (
+            <li key={`${review.reviewer}-${review.comment}`}>
               <div className={css.wrapperRew}>
                 <div className={css.avatarCircle}>
                   {review.reviewer.charAt(0).toUpperCase()}

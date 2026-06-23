@@ -1,17 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { ref, get } from "firebase/database";
-import { db } from "../api/firebase";
+import { apiFetch } from "../api/client";
 import type { UserProfile } from "../types/user";
 
-export function useUserProfile(uid: string | undefined) {
+export function useUserProfile(userId: string | undefined) {
   return useQuery<UserProfile | null>({
-    queryKey: ["userProfile", uid],
+    queryKey: ["userProfile", userId],
     queryFn: async () => {
-      if (!uid) return null;
-      const snapshot = await get(ref(db, `users/${uid}`));
-      if (!snapshot.exists()) return null;
-      return snapshot.val();
+      const res = await apiFetch<{ data: { id: string }[] }>(
+        "/nannies/favorites"
+      );
+      return {
+        email: "",
+        name: "",
+        favorites: res.data.map((nanny) => nanny.id),
+      };
     },
-    enabled: !!uid, // запускається тільки якщо є користувач
+    enabled: !!userId,
   });
 }

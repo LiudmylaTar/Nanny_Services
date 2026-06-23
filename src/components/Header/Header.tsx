@@ -9,7 +9,6 @@ import Modal from "../common/Modal/Modal";
 import LoginForm from "../LoginForm/LoginForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import useCurrentUser from "../../hooks/useCurrentUser";
-import { useUserProfile } from "../../hooks/useUserProfile";
 import useAuthMutations from "../../servise/auth";
 import Icon from "../../shared/Icon";
 import MobileMenu from "../MobileMenu/MobileMenu";
@@ -27,7 +26,6 @@ export default function Header({ modalType, setModalType }: HeaderProps) {
   const handleClose = () => setModalType(null);
 
   const { data: user = null } = useCurrentUser();
-  const { data: profile } = useUserProfile(user?.uid);
   const { logout } = useAuthMutations();
 
   const modalContent = {
@@ -64,7 +62,6 @@ export default function Header({ modalType, setModalType }: HeaderProps) {
             onOpenModal={setModalType}
             onLogout={() => logout.mutate()}
             isUser={user}
-            profile={profile}
           />
         </div>
       </div>
@@ -75,7 +72,6 @@ export default function Header({ modalType, setModalType }: HeaderProps) {
             isUser={user}
             onOpenModal={setModalType}
             onLogout={() => logout.mutate()}
-            profile={profile}
           />
         </Modal>
       )}

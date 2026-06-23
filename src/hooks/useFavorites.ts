@@ -1,73 +1,73 @@
-import {
-  useMutation,
-  useQueryClient,
-  type InfiniteData,
-} from "@tanstack/react-query";
-import { ref, update } from "firebase/database";
-import { db } from "../api/firebase";
-import type { UserProfile } from "../types/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiFetch } from "../api/client";
 import type { Nanny } from "../types/nanny";
+import type { UserProfile } from "../types/user";
 
 interface ToggleFavoriteArgs {
-  uid: string;
   nannyId: string;
-  isFavorite: boolean;
+  userId: string;
+  nanny?: Nanny;
 }
+
 export default function useFavorites() {
   const queryClient = useQueryClient();
+
   const toggleFavorite = useMutation({
-    mutationFn: async ({ uid, nannyId, isFavorite }: ToggleFavoriteArgs) => {
-      const current: string[] =
-        (
-          queryClient.getQueryData(["userProfile", uid]) as
-            | UserProfile
-            | undefined
-        )?.favorites || [];
-      const newFavorites = isFavorite
-        ? current.filter((id) => id !== nannyId) // видалити
-        : [...current, nannyId]; // додати
+    mutationFn: ({ nannyId }: ToggleFavoriteArgs) =>
+      apiFetch<{ isFavorite: boolean }>(`/nannies/${nannyId}/favorite`, {
+        method: "PATCH",
+      }),
 
-      await update(ref(db, `users/${uid}`), { favorites: newFavorites });
-      return newFavorites;
+    onMutate: async ({ nannyId, userId, nanny }) => {
+      const profileKey = ["userProfile", userId] as const;
+      const favoritesKey = ["favorites"] as const;
+
+      await queryClient.cancelQueries({ queryKey: profileKey });
+      await queryClient.cancelQueries({ queryKey: favoritesKey });
+
+      const prevProfile = queryClient.getQueryData<UserProfile | null>(profileKey);
+      const prevFavorites = queryClient.getQueryData<Nanny[]>(favoritesKey);
+
+      if (prevProfile) {
+        const isFav = prevProfile.favorites.includes(nannyId);
+        queryClient.setQueryData<UserProfile>(profileKey, {
+          ...prevProfile,
+          favorites: isFav
+            ? prevProfile.favorites.filter((id) => id !== nannyId)
+            : [...prevProfile.favorites, nannyId],
+        });
+      }
+
+      if (prevFavorites) {
+        const isFav = prevFavorites.some((n) => n.id === nannyId);
+        queryClient.setQueryData<Nanny[]>(
+          favoritesKey,
+          isFav
+            ? prevFavorites.filter((n) => n.id !== nannyId)
+            : nanny
+              ? [...prevFavorites, nanny]
+              : prevFavorites
+        );
+      }
+
+      return { prevProfile, prevFavorites, profileKey, favoritesKey };
     },
-    onMutate: async ({ uid, nannyId, isFavorite }) => {
-      await queryClient.cancelQueries({ queryKey: ["favorites", uid] });
 
-      const prev = queryClient.getQueryData<InfiniteData<Nanny[]>>([
-        "favorites",
-        uid,
-      ]);
-
-      queryClient.setQueryData<InfiniteData<Nanny[]>>(
-        ["favorites", uid],
-        (old) => {
-          if (!old) return old;
-
-          return {
-            ...old,
-            pages: old.pages.map((page) =>
-              isFavorite ? page.filter((n) => n.id !== nannyId) : page
-            ),
-          };
-        }
-      );
-
-      return { prev };
-    },
-
-    onError: (_err, { uid }, ctx) => {
-      if (ctx?.prev) {
-        queryClient.setQueryData(["favorites", uid], ctx.prev);
+    onError: (_err, _vars, ctx) => {
+      if (!ctx) return;
+      if (ctx.prevProfile !== undefined) {
+        queryClient.setQueryData(ctx.profileKey, ctx.prevProfile);
+      }
+      if (ctx.prevFavorites !== undefined) {
+        queryClient.setQueryData(ctx.favoritesKey, ctx.prevFavorites);
       }
     },
 
-    onSuccess: (_, { uid }) => {
-      queryClient.invalidateQueries({ queryKey: ["userProfile", uid] });
-      queryClient.invalidateQueries({
-        queryKey: ["favorites", uid],
-        exact: false,
-      });
+    onSettled: (_data, _err, { userId }) => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      queryClient.invalidateQueries({ queryKey: ["userProfile", userId] });
     },
   });
+
   return { toggleFavorite };
 }

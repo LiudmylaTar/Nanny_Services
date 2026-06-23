@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import Icon from "../../shared/Icon";
-import type { CurrentUser, UserProfile } from "../../types/user";
+import type { CurrentUser } from "../../types/user";
 import Button from "../common/Button/Button";
 import css from "./AuthNav.module.css";
 import { useTheme } from "../../hooks/useTheme";
@@ -10,7 +10,6 @@ interface AuthNavProps {
   onOpenModal: (type: "login" | "register") => void;
   onLogout: () => void;
   isUser: CurrentUser;
-  profile?: UserProfile | null | undefined;
   vertical?: boolean;
 }
 
@@ -18,7 +17,6 @@ export default function AuthNav({
   onOpenModal,
   onLogout,
   isUser,
-  profile,
   vertical = false,
 }: AuthNavProps) {
   const [open, setOpen] = useState(false);
@@ -69,7 +67,7 @@ export default function AuthNav({
             >
               <Icon name="mdi_user" className={css.icon} />
             </div>
-            <p className={css.userName}>{profile?.name}</p>
+            <p className={css.userName}>{isUser.name}</p>
             {open && (
               <div className={css.dropdown}>
                 <button onClick={() => handleChangeTheme("red")}>Red</button>

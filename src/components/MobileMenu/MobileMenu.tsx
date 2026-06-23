@@ -1,4 +1,4 @@
-import type { CurrentUser, UserProfile } from "../../types/user";
+import type { CurrentUser } from "../../types/user";
 import AuthNav from "../AuthNav/AuthNav";
 import NavLinks from "../NavLinks/NavLinks";
 
@@ -8,14 +8,12 @@ interface MobileMenuProps {
   isUser: CurrentUser;
   onOpenModal: (type: "login" | "register") => void;
   onLogout: () => void;
-  profile?: UserProfile | null;
 }
 
 export default function MobileMenu({
   isUser,
   onOpenModal,
   onLogout,
-  profile,
 }: MobileMenuProps) {
   return (
     <div className={css.menuWrapper}>
@@ -25,7 +23,6 @@ export default function MobileMenu({
         vertical={true}
         onOpenModal={onOpenModal}
         onLogout={onLogout}
-        profile={profile}
       />
     </div>
   );

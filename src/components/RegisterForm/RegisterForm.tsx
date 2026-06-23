@@ -2,7 +2,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { FirebaseError } from "firebase/app";
 import css from "./RegisterForm.module.css";
 import FormInput from "../FormInput/FormInput";
 import PasswordInput from "../FormInput/PasswordInput";
@@ -42,8 +41,9 @@ export default function RegisterForm({ onClose }: RegisterFormProps) {
         onClose();
       },
       onError: (error: unknown) => {
-        const firebaseError = error as FirebaseError;
-        toast.error(firebaseError.message || "Registration error");
+        const message =
+          error instanceof Error ? error.message : "Registration error";
+        toast.error(message);
         console.error("Mutation error:", error);
       },
     });

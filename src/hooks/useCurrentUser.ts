@@ -1,19 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { auth } from "../api/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import type { User } from "firebase/auth";
+import { apiFetch, refreshAccessToken } from "../api/client";
+import type { User } from "../types/user";
 
 export default function useCurrentUser() {
   return useQuery<User | null>({
     queryKey: ["currentUser"],
-    queryFn: () =>
-      new Promise<User | null>((resolve) => {
-        const unsub = onAuthStateChanged(auth, (user) => {
-          unsub(); // відписуємось після першого виклику
-          resolve(user);
-        });
-      }),
-    staleTime: Infinity, // не протухає
-    gcTime: Infinity, // тримаємо в кеші
+    queryFn: async () => {
+      if (!localStorage.getItem("accessToken")) {
+        const token = await refreshAccessToken();
+        if (!token) return null;
+      }
+
+      try {
+        const { user } = await apiFetch<{ user: User }>("/auth/me");
+        return user;
+      } catch {
+        return null;
+      }
+    },
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }

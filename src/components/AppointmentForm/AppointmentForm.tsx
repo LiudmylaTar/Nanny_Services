@@ -7,7 +7,7 @@ import FormInput from "../FormInput/FormInput";
 import Button from "../common/Button/Button";
 import FormTimePicker from "../FormTimePicker/FormTimePicker";
 import useAppointment from "../../hooks/useAppointment";
-import { auth } from "../../api/firebase";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 const AppointmentSchema = yup.object({
   address: yup.string().required("Address is required"),
@@ -50,17 +50,15 @@ export default function AppointmentForm({
   });
   const { handleSubmit } = methods;
   const { createAppointment } = useAppointment();
+  const { data: user } = useCurrentUser();
 
   const onSubmit = (data: AppointmentFormValues) => {
-    const user = auth.currentUser;
-
     if (!user) {
       toast.error("You must be logged in to make an appointment.");
       return;
     }
-    console.log(data);
     createAppointment.mutate({
-      uid: user.uid,
+      uid: user.id,
       data: {
         ...data,
         nannyName: nanny.name,
